@@ -3,8 +3,12 @@ import { tuyau } from '~/core/tuyau'
 import type { FormEvent } from 'react'
 import { AuthLayout } from '~/components/auth/auth_layout'
 
-export default function LoginPage() {
-  const { errors, post, processing, data, setData, reset } = useForm({ email: '', password: '' })
+export default function RegisterPage() {
+  const { errors, post, processing, data, setData, reset } = useForm({
+    email: '',
+    password: '',
+    passwordConfirmation: '',
+  })
 
   function submit(event: FormEvent) {
     event.preventDefault()
@@ -13,19 +17,15 @@ export default function LoginPage() {
       return
     }
 
-    post(tuyau.$url('auth.login'), {
+    post(tuyau.$url('auth.register'), {
       onFinish() {
-        reset('password')
+        reset('password', 'passwordConfirmation')
       },
     })
   }
 
   return (
-    <AuthLayout title="Sign in to your account">
-      {'code' in errors && errors.code === 'E_INVALID_CREDENTIALS' && (
-        <span>No account found with the provided credentials</span>
-      )}
-
+    <AuthLayout title="Register">
       <form action="" method="POST" onSubmit={submit}>
         <div>
           <label htmlFor="email">Email</label>
@@ -51,12 +51,23 @@ export default function LoginPage() {
           {errors.password && <small>{errors.password}</small>}
         </div>
 
+        <div>
+          <label htmlFor="passwordConfirmation">Password Confirmation</label>
+          <input
+            id="passwordConfirmation"
+            name="passwordConfirmation"
+            type="password"
+            value={data.passwordConfirmation}
+            onChange={(e) => setData('passwordConfirmation', e.target.value)}
+          />
+        </div>
+
         <button type="submit" disabled={processing}>
-          {processing ? 'Loading...' : 'Login'}
+          {processing ? 'Loading...' : 'Register'}
         </button>
       </form>
       <p>
-        Not a member yet? <Link href={tuyau.$url('auth.register')}>Register</Link>
+        Already have an account? <Link href={tuyau.$url('auth.login')}>Login</Link>
       </p>
     </AuthLayout>
   )
