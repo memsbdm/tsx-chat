@@ -1,14 +1,8 @@
-/*
-|--------------------------------------------------------------------------
-| Routes file
-|--------------------------------------------------------------------------
-|
-| The routes file is used for defining the HTTP routes.
-|
-*/
-
 import router from '@adonisjs/core/services/router'
+import { middleware } from '#start/kernel'
 const LoginController = () => import('#auth/controllers/login_controller')
+
+// Auth
 
 router
   .group(() => {
@@ -16,3 +10,4 @@ router
     router.post('login', [LoginController, 'execute'])
   })
   .prefix('auth')
+  .middleware(middleware.guest())
