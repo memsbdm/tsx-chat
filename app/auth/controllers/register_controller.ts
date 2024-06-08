@@ -5,11 +5,12 @@ import { User } from '#auth/models/user'
 export default class RegisterController {
   static validator = vine.compile(
     vine.object({
-      email: vine
+      username: vine
         .string()
-        .email()
+        .minLength(3)
+        .maxLength(32)
         .unique(async (db, value) => {
-          const user = await db.from('users').where('email', value).first()
+          const user = await db.from('users').where('username', value).first()
           return !user
         }),
       password: vine.string().minLength(8).confirmed({ confirmationField: 'passwordConfirmation' }),

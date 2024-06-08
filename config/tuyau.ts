@@ -5,6 +5,7 @@ const tuyauConfig = defineConfig({
     /**
      * List of routes to ignore during code generation
      */
+    // @ts-ignore
     ignoreRoutes: [],
   },
 })

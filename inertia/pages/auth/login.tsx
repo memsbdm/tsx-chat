@@ -4,7 +4,7 @@ import type { FormEvent } from 'react'
 import { AuthLayout } from '~/components/auth/auth_layout'
 
 export default function LoginPage() {
-  const { errors, post, processing, data, setData, reset } = useForm({ email: '', password: '' })
+  const { errors, post, processing, data, setData, reset } = useForm({ username: '', password: '' })
 
   function submit(event: FormEvent) {
     event.preventDefault()
@@ -28,15 +28,15 @@ export default function LoginPage() {
 
       <form action="" method="POST" onSubmit={submit}>
         <div>
-          <label htmlFor="email">Email</label>
+          <label htmlFor="email">Username</label>
           <input
-            id="email"
-            name="email"
-            type="email"
-            value={data.email}
-            onChange={(e) => setData('email', e.target.value)}
+            id="username"
+            name="username"
+            type="text"
+            value={data.username}
+            onChange={(e) => setData('username', e.target.value)}
           />
-          {errors.email && <small>{errors.email}</small>}
+          {errors.username && <small>{errors.username}</small>}
         </div>
 
         <div>

@@ -14,3 +14,9 @@ router
   })
   .prefix('auth')
   .middleware(middleware.guest())
+
+router
+  .group(() => {
+    // router.get('/')
+  })
+  .middleware(middleware.auth())

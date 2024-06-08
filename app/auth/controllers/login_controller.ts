@@ -5,7 +5,7 @@ import { User } from '#auth/models/user'
 export default class LoginController {
   static validator = vine.compile(
     vine.object({
-      email: vine.string().email(),
+      username: vine.string(),
       password: vine.string(),
     })
   )
@@ -15,9 +15,9 @@ export default class LoginController {
   }
 
   async execute({ auth, request, response }: HttpContext) {
-    const { email, password } = await request.validateUsing(LoginController.validator)
+    const { username, password } = await request.validateUsing(LoginController.validator)
 
-    const user = await User.verifyCredentials(email, password)
+    const user = await User.verifyCredentials(username, password)
     await auth.use('web').login(user)
 
     return response.redirect().toPath('/')

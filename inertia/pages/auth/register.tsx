@@ -5,7 +5,7 @@ import { AuthLayout } from '~/components/auth/auth_layout'
 
 export default function RegisterPage() {
   const { errors, post, processing, data, setData, reset } = useForm({
-    email: '',
+    username: '',
     password: '',
     passwordConfirmation: '',
   })
@@ -28,15 +28,15 @@ export default function RegisterPage() {
     <AuthLayout title="Register">
       <form action="" method="POST" onSubmit={submit}>
         <div>
-          <label htmlFor="email">Email</label>
+          <label htmlFor="username">Username</label>
           <input
-            id="email"
-            name="email"
-            type="email"
-            value={data.email}
-            onChange={(e) => setData('email', e.target.value)}
+            id="username"
+            name="username"
+            type="text"
+            value={data.username}
+            onChange={(e) => setData('username', e.target.value)}
           />
-          {errors.email && <small>{errors.email}</small>}
+          {errors.username && <small>{errors.username}</small>}
         </div>
 
         <div>
