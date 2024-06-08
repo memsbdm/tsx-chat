@@ -56,6 +56,8 @@
     "@adonisjs/static": "^1.1.1",
     "@adonisjs/vite": "^3.0.0",
     "@inertiajs/react": "^1.1.0",
+    "@tuyau/client": "^0.1.2",
+    "@tuyau/core": "^0.1.4",
     "@vinejs/vine": "^2.0.0",
     "edge.js": "^6.0.2",
     "luxon": "^3.4.4",
