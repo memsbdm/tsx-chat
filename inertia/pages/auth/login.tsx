@@ -2,6 +2,8 @@ import { Link, useForm } from '@inertiajs/react'
 import { tuyau } from '~/core/tuyau'
 import type { FormEvent } from 'react'
 import { AuthLayout } from '~/components/auth/auth_layout'
+import { Submit } from '~/components/form/submit'
+import { FormError } from '~/components/form/form_error'
 
 export default function LoginPage() {
   const { errors, post, processing, data, setData, reset } = useForm({ username: '', password: '' })
@@ -23,12 +25,12 @@ export default function LoginPage() {
   return (
     <AuthLayout title="Sign in to your account">
       {'code' in errors && errors.code === 'E_INVALID_CREDENTIALS' && (
-        <span>No account found with the provided credentials</span>
+        <FormError label={'No account found with provided credentials'} />
       )}
 
-      <form action="" method="POST" onSubmit={submit}>
-        <div>
-          <label htmlFor="email">Username</label>
+      <form action="" method="POST" onSubmit={submit} className="w-80">
+        <div className={'flex flex-col'}>
+          <label htmlFor="username">Username</label>
           <input
             id="username"
             name="username"
@@ -36,10 +38,10 @@ export default function LoginPage() {
             value={data.username}
             onChange={(e) => setData('username', e.target.value)}
           />
-          {errors.username && <small>{errors.username}</small>}
+          {errors.username && <FormError label={errors.username} />}
         </div>
 
-        <div>
+        <div className={'flex flex-col'}>
           <label htmlFor="password">Password</label>
           <input
             id="password"
@@ -48,15 +50,15 @@ export default function LoginPage() {
             value={data.password}
             onChange={(e) => setData('password', e.target.value)}
           />
-          {errors.password && <small>{errors.password}</small>}
+          {errors.password && <FormError label={errors.password} />}
         </div>
-
-        <button type="submit" disabled={processing}>
-          {processing ? 'Loading...' : 'Login'}
-        </button>
+        <Submit label="Login" disabled={processing}></Submit>
       </form>
       <p>
-        Not a member yet? <Link href={tuyau.$url('auth.register')}>Register</Link>
+        Not a member yet?{' '}
+        <Link href={tuyau.$url('auth.register')} className={'text-blue-5'}>
+          Register
+        </Link>
       </p>
     </AuthLayout>
   )

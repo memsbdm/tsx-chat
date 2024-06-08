@@ -1,5 +1,5 @@
 import type { HttpContext } from '@adonisjs/core/http'
-import vine from '@vinejs/vine'
+import vine, { SimpleMessagesProvider } from '@vinejs/vine'
 import { User } from '#auth/models/user'
 
 export default class RegisterController {
@@ -22,7 +22,9 @@ export default class RegisterController {
   }
 
   async execute({ auth, request, response }: HttpContext) {
-    const payload = await request.validateUsing(RegisterController.validator)
+    const payload = await request.validateUsing(RegisterController.validator, {
+      messagesProvider: new SimpleMessagesProvider({ confirmed: 'Passwords do not match' }),
+    })
     const user = await User.create(payload)
 
     await auth.use('web').login(user)
