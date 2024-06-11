@@ -27,7 +27,6 @@ export default function PrivateChat() {
       const { date, message, username } = data
       newChat.innerText = date + ' - ' + username + ' : ' + message
       newChatsContainer.appendChild(newChat)
-      console.log(data)
     })
   }, [])
   const { setData, post, processing, data, reset } = useForm({ message: '' })
@@ -52,7 +51,7 @@ export default function PrivateChat() {
         <form
           action=""
           id="message_form"
-          className="flex flex-col w-full  md:w-2xl"
+          className="flex flex-col w-full md:w-2xl"
           onSubmit={submit}
           method="POST"
         >
