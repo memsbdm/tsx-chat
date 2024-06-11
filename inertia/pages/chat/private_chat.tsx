@@ -1,5 +1,5 @@
 import { Submit } from '~/components/form/submit'
-import { useForm } from '@inertiajs/react'
+import { router, useForm } from '@inertiajs/react'
 import { FormEvent, useEffect } from 'react'
 import { Transmit } from '@adonisjs/transmit-client'
 import { tuyau } from '~/core/tuyau'
@@ -19,15 +19,21 @@ export default function PrivateChat() {
     const subscription = transmit.subscription('chat/private')
     ;(async () => {
       await subscription.create()
+      await fetch(tuyau.$url('chat.private.join'))
     })()
 
-    subscription.onMessage((data: SentMessage) => {
+    const stopListening = subscription.onMessage((data: SentMessage) => {
       const newChatsContainer = document.querySelector('.new_chats_container')!
       const newChat = document.createElement('p')
       const { date, message, username } = data
       newChat.innerText = date + ' - ' + username + ' : ' + message
       newChatsContainer.appendChild(newChat)
     })
+
+    return () => {
+      router.get(tuyau.$url('chat.private.leave'))
+      stopListening()
+    }
   }, [])
   const { setData, post, processing, data, reset } = useForm({ message: '' })
 
@@ -46,7 +52,7 @@ export default function PrivateChat() {
     <>
       <div className={'h-screen flex flex-col justify-between items-center w-full px5'}>
         <div
-          className={'new_chats_container h-full w-full my-6 flex flex-col justify-end  md:w-2xl'}
+          className={'new_chats_container h-full w-full my-6 flex flex-col justify-end md:w-2xl'}
         ></div>
         <form
           action=""
@@ -63,7 +69,7 @@ export default function PrivateChat() {
             value={data.message}
             onChange={(e) => setData('message', e.target.value)}
           />
-          <Submit label={'Send'} disabled={false}></Submit>
+          <Submit label={'Send'} disabled={processing}></Submit>
         </form>
       </div>
     </>

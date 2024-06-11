@@ -14,6 +14,27 @@ export default class PrivateChatController {
     const { message } = await request.validateUsing(PrivateChatController.validator)
     const username = auth.user!.username
     const date = DateTime.now().toFormat('DD H:mm:ss')
+
+    transmit.broadcast('chat/private', { username, message, date })
+
+    return response.redirect().back()
+  }
+
+  join({ auth, response }: HttpContext) {
+    const message = 'joined the chat.'
+    const username = auth.user!.username
+    const date = DateTime.now().toFormat('DD H:mm:ss')
+
+    transmit.broadcast('chat/private', { username, message, date })
+
+    return response.redirect().back()
+  }
+
+  leave({ auth, response }: HttpContext) {
+    const message = 'left the chat.'
+    const username = auth.user!.username
+    const date = DateTime.now().toFormat('DD H:mm:ss')
+
     transmit.broadcast('chat/private', { username, message, date })
 
     return response.redirect().back()

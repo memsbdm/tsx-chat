@@ -26,6 +26,8 @@ router
       .group(() => {
         router.get('private', [PrivateChatController, 'render']).as('chat.private')
         router.post('private', [PrivateChatController, 'execute'])
+        router.get('private/join', [PrivateChatController, 'join']).as('chat.private.join')
+        router.get('private/leave', [PrivateChatController, 'leave']).as('chat.private.leave')
       })
       .prefix('chat')
   })
