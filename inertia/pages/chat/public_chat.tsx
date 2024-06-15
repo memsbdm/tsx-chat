@@ -4,6 +4,7 @@ import { FormEvent, useEffect } from 'react'
 import { Transmit } from '@adonisjs/transmit-client'
 import { tuyau } from '~/core/tuyau'
 import { DateTime } from 'luxon'
+import { FormError } from '~/components/form/form_error'
 
 export default function PublicChat() {
   interface SentMessage {
@@ -35,7 +36,7 @@ export default function PublicChat() {
       stopListening()
     }
   }, [])
-  const { setData, post, processing, data, reset } = useForm({ message: '' })
+  const { errors, setData, post, processing, data, reset } = useForm({ message: '' })
 
   function submit(event: FormEvent) {
     event.preventDefault()
@@ -69,6 +70,9 @@ export default function PublicChat() {
             value={data.message}
             onChange={(e) => setData('message', e.target.value)}
           />
+          {'code' in errors && errors.code === 'E_TOO_MANY_REQUESTS' && (
+            <FormError label={"You're too fast!"} />
+          )}
           <Submit label={'Send'} disabled={processing}></Submit>
         </form>
       </div>
