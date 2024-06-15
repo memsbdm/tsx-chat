@@ -1,6 +1,7 @@
 import router from '@adonisjs/core/services/router'
 import { middleware } from '#start/kernel'
-const PrivateChatController = () => import('../app/chat/controllers/private_chat_controller.js')
+const PublicChatController = () => import('#chat/controllers/public_chat_controller')
+const PrivateChatController = () => import('#chat/controllers/private_chat_controller')
 const RegisterController = () => import('#auth/controllers/register_controller')
 const LoginController = () => import('#auth/controllers/login_controller')
 
@@ -28,6 +29,11 @@ router
         router.post('private', [PrivateChatController, 'execute'])
         router.get('private/join', [PrivateChatController, 'join']).as('chat.private.join')
         router.get('private/leave', [PrivateChatController, 'leave']).as('chat.private.leave')
+
+        router.get('public', [PublicChatController, 'render']).as('chat.public')
+        router.post('public', [PublicChatController, 'execute'])
+        router.get('public/join', [PublicChatController, 'join']).as('chat.public.join')
+        router.get('public/leave', [PublicChatController, 'leave']).as('chat.public.leave')
       })
       .prefix('chat')
   })

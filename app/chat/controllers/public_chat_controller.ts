@@ -1,11 +1,12 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import { DateTime } from 'luxon'
 import transmit from '@adonisjs/transmit/services/main'
-import { ChatValidator } from '../validators/chat_validator.js'
+import { ChatValidator } from '#chat/validators/chat_validator'
+import Chat from '#chat/models/chat'
 
-export default class PrivateChatController {
+export default class PublicChatController {
   render({ inertia }: HttpContext) {
-    return inertia.render('chat/private_chat')
+    return inertia.render('chat/public_chat')
   }
 
   async execute({ auth, request, response }: HttpContext) {
@@ -13,7 +14,8 @@ export default class PrivateChatController {
     const username = auth.user!.username
     const date = DateTime.now().toFormat('DD H:mm:ss')
 
-    transmit.broadcast('chat/private', { username, message, date })
+    transmit.broadcast('chat/public', { username, message, date })
+    await Chat.create({ userId: auth.user!.id, message: message })
 
     return response.redirect().back()
   }
@@ -23,7 +25,7 @@ export default class PrivateChatController {
     const username = auth.user!.username
     const date = DateTime.now().toFormat('DD H:mm:ss')
 
-    transmit.broadcast('chat/private', { username, message, date })
+    transmit.broadcast('chat/public', { username, message, date })
 
     return response.redirect().back()
   }
