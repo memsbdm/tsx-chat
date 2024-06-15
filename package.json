@@ -15,6 +15,7 @@
   },
   "imports": {
     "#auth/*": "./app/auth/*.js",
+    "#chat/*": "./app/chat/*.js",
     "#core/*": "./app/core/*.js",
     "#providers/*": "./providers/*.js",
     "#database/*": "./database/*.js",
